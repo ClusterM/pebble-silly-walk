@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!-- -*-coding: utf-8 -*-
+vim: sw=2 ts=2 expandtab ai
+-->
+
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body { background-color: black; text-align: center; color: white }
+      h1 { margin: 0 }
+      small { color: gray }
+      a { color: white }
+      input { height: 1.5em; font-size: 1.2em; font-weight: bold }
+      .text { width: 93%; margin: 0.5em; text-align: center }
+      .submit { width: 93%; margin: 0.4em }
+      .param { display: inline-table; width: 95%; height: 3em }
+      .label,.checkbox { display: table-cell; vertical-align: middle }
+      .label { text-align: left }
+      .checkbox { text-align: right; width: 1.5em; height: 1.5em }
+      .example { width: 75%; display: inline-block; text-align: left; font-size: 0.6em }
+    </style>
+    <script>
+
+      var config = _CONFIG_;
+
+      function put_config() {
+        for (var param in config) {
+          var element = document.getElementById(param);
+          if (element) {
+            if (typeof config[param] === 'boolean') {
+              element.checked = config[param];
+            } else {
+              element.value = config[param];
+            }
+          }
+        }
+      }
+
+      function get_config() {
+        var form = document.getElementById('config_form');
+        for (config = {}, i = 0; i < form.length ; i++) {
+          id = form[i].id;
+          if (id != "save") {
+            if (form[i].type === 'checkbox') {
+              config[id] = form[i].checked;
+            } else {
+              config[id] = form[i].value;
+            }
+          }
+        }
+       	return window.location.href = "pebblejs://close#" + encodeURIComponent(JSON.stringify(config));
+      }
+
+      function toggle_visibility(id) {
+        var e = document.getElementById(id);
+        if(e.style.display == 'block')
+          e.style.display = 'none';
+        else
+          e.style.display = 'block';
+      }
+    </script>
+  </head>
+  <body onload="put_config();">
+    <h1>Silly Walk</h1>
+    <small>by Dan Long, mod by Alexey Avdyukhin</small>
+    <hr size="1" />
+
+    <form action="javascript: get_config();" id="config_form">
+      <div class="param">
+        <div class="label">
+          Show "no connection" icon<br>
+          <small>Show when phone is not connected</small>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" id="config_show_no_phone" class="checkbox">
+        </div>
+      </div>
+
+      <div class="param">
+        <div class="label">
+          Show battery icon<br>
+          <small>Show battery status</small>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" id="config_show_battery" class="checkbox">
+        </div>
+      </div>
+
+      <div class="param">
+        <div class="label">
+          Vibe on disconnect<br>
+          <small>Vibe when phone is disconnected</small>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" id="config_vibe" class="checkbox">
+        </div>
+      </div>
+
+			<div class="param">
+        <div class="label">
+          Seconds<br>
+          <small>Show seconds</small>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" id="config_seconds" class="checkbox">
+        </div>
+      </div>
+			
+      <div class="param">
+        <div class="label">
+          Simple mode<br>
+          <small>Use simple background</small>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" id="config_simple" class="checkbox">
+        </div>
+      </div>			
+			
+			<hr size="1" />
+			<input type="submit" id="save" class="submit" value="Save and apply">
+  </body>
+</html>
